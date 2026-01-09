@@ -312,7 +312,6 @@
     </div>
 
     <script>
-        // Dữ liệu được nhúng trực tiếp từ thư mục
         const songsData = {
         "not print": [
                 {
@@ -1257,7 +1256,6 @@
         let currentCategory = 'all';
         let searchQuery = '';
 
-        // Update statistics
         function updateStats() {
             const totalSongs = (songsData['printed']?.length || 0) + (songsData['not print']?.length || 0);
             let totalFiles = 0;
@@ -1276,7 +1274,6 @@
             document.getElementById('totalFiles').textContent = totalFiles;
         }
 
-        // Render songs
         function renderSongs() {
             const grid = document.getElementById('songsGrid');
             const noResults = document.getElementById('noResults');
@@ -1289,7 +1286,6 @@
                 songs = songsData[currentCategory] || [];
             }
 
-            // Filter by search
             if (searchQuery) {
                 songs = songs.filter(song => 
                     song.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -1311,7 +1307,6 @@
             });
         }
 
-        // Create song card
         function createSongCard(song) {
             const card = document.createElement('div');
             card.className = 'song-card';
@@ -1348,7 +1343,6 @@
             return card;
         }
 
-        // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1358,13 +1352,11 @@
             });
         });
 
-        // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             searchQuery = e.target.value;
             renderSongs();
         });
 
-        // Initialize
         updateStats();
         renderSongs();
     </script>
