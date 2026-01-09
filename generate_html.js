@@ -154,84 +154,73 @@ function generateHTML(data) {
             transform: translateY(-2px);
         }
 
-        .filters-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        .filters-sidebar {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .filters-section {
             animation: fadeIn 1s ease;
-            flex-wrap: wrap;
-            align-items: center;
         }
 
         .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
-            border-radius: 12px;
+            margin-bottom: 25px;
         }
 
         .filter-label {
             color: white;
             font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .filter-select {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 8px;
-            background: white;
-            color: #333;
-            font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            display: block;
         }
 
-        .filter-select:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .filter-select:focus {
-            outline: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        }
-
-        .tabs {
+        .filter-buttons {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            animation: fadeIn 1.2s ease;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .tab {
-            flex: 1;
-            padding: 15px 30px;
-            background: rgba(255,255,255,0.2);
+        .filter-btn {
+            padding: 10px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
-            border: none;
-            border-radius: 15px;
+            border-radius: 10px;
             color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
+            text-align: left;
         }
 
-        .tab:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateX(5px);
         }
 
-        .tab.active {
+        .filter-btn.active {
             background: white;
             color: #667eea;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
+
 
         .songs-grid {
             display: grid;
@@ -376,12 +365,16 @@ function generateHTML(data) {
                 font-size: 2rem;
             }
 
-            .songs-grid {
+            .main-content {
                 grid-template-columns: 1fr;
             }
 
-            .tabs {
-                flex-direction: column;
+            .filters-sidebar {
+                position: static;
+            }
+
+            .songs-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -407,44 +400,67 @@ function generateHTML(data) {
             <input type="text" class="search-input" id="searchInput" placeholder="🔍 Tìm kiếm bài hát...">
         </div>
 
-        <div class="filters-bar">
-            <div class="filter-group">
-                <span class="filter-label">Loại:</span>
-                <select class="filter-select" id="typeFilter">
-                    <option value="all">Tất cả</option>
-                    <option value="piano">Piano</option>
-                    <option value="midi">MIDI</option>
-                    <option value="chord">Chord</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <span class="filter-label">Sắp xếp:</span>
-                <select class="filter-select" id="sortFilter">
-                    <option value="name-asc">A → Z</option>
-                    <option value="name-desc">Z → A</option>
-                </select>
-            </div>
-        </div>
+        <div class="main-content">
+            <aside class="filters-sidebar">
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <span class="filter-label">📂 Trạng thái in</span>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="print" data-value="all">Tất cả</button>
+                            <button class="filter-btn" data-filter="print" data-value="printed">Đã in</button>
+                            <button class="filter-btn" data-filter="print" data-value="not print">Chưa in</button>
+                        </div>
+                    </div>
 
-        <div class="tabs">
-            <button class="tab active" data-category="all">Tất cả</button>
-            <button class="tab" data-category="printed">Đã in</button>
-            <button class="tab" data-category="not print">Chưa in</button>
-        </div>
+                    <div class="filter-group">
+                        <span class="filter-label">🎹 Loại</span>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="type" data-value="all">Tất cả</button>
+                            <button class="filter-btn" data-filter="type" data-value="piano">Piano</button>
+                            <button class="filter-btn" data-filter="type" data-value="midi">MIDI</button>
+                            <button class="filter-btn" data-filter="type" data-value="chord">Chord</button>
+                        </div>
+                    </div>
 
-        <div class="songs-grid" id="songsGrid"></div>
-        <div class="no-results" id="noResults" style="display: none;">
-            Không tìm thấy bài hát nào 😢
+                    <div class="filter-group">
+                        <span class="filter-label">⭐ Độ khó</span>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="difficulty" data-value="all">Tất cả</button>
+                            <button class="filter-btn" data-filter="difficulty" data-value="Easy">Easy</button>
+                            <button class="filter-btn" data-filter="difficulty" data-value="Medium">Medium</button>
+                            <button class="filter-btn" data-filter="difficulty" data-value="Hard">Hard</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <span class="filter-label">🔤 Sắp xếp</span>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="sort" data-value="name-asc">A → Z</button>
+                            <button class="filter-btn" data-filter="sort" data-value="name-desc">Z → A</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="content-area">
+                <div class="songs-grid" id="songsGrid"></div>
+                <div class="no-results" id="noResults" style="display: none;">
+                    Không tìm thấy bài hát nào 😢
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         const songsData = ${JSON.stringify(data, null, 8)};
         
-        let currentCategory = 'all';
+        let filters = {
+            print: 'all',
+            type: 'all',
+            difficulty: 'all',
+            sort: 'name-asc'
+        };
         let searchQuery = '';
-        let typeFilter = 'all';
-        let sortOrder = 'name-asc';
 
         function updateStats() {
             const totalSongs = (songsData['printed']?.length || 0) + (songsData['not print']?.length || 0);
@@ -470,10 +486,12 @@ function generateHTML(data) {
             grid.innerHTML = '';
 
             let songs = [];
-            if (currentCategory === 'all') {
+            
+            // Filter by print status
+            if (filters.print === 'all') {
                 songs = [...(songsData['printed'] || []), ...(songsData['not print'] || [])];
             } else {
-                songs = songsData[currentCategory] || [];
+                songs = songsData[filters.print] || [];
             }
 
             // Filter by search
@@ -484,23 +502,30 @@ function generateHTML(data) {
             }
 
             // Filter by type
-            if (typeFilter !== 'all') {
+            if (filters.type !== 'all') {
                 songs = songs.filter(song => {
                     return Object.values(song.difficulties).some(difficulty => {
                         return Object.keys(difficulty).some(type => {
-                            if (typeFilter === 'piano') return type.toLowerCase() === 'piano';
-                            if (typeFilter === 'midi') return type.toLowerCase() === 'midi';
-                            if (typeFilter === 'chord') return type.toLowerCase().includes('chord');
+                            if (filters.type === 'piano') return type.toLowerCase() === 'piano';
+                            if (filters.type === 'midi') return type.toLowerCase() === 'midi';
+                            if (filters.type === 'chord') return type.toLowerCase().includes('chord');
                             return false;
                         });
                     });
                 });
             }
 
+            // Filter by difficulty
+            if (filters.difficulty !== 'all') {
+                songs = songs.filter(song => {
+                    return Object.keys(song.difficulties).includes(filters.difficulty);
+                });
+            }
+
             // Sort
-            if (sortOrder === 'name-asc') {
+            if (filters.sort === 'name-asc') {
                 songs.sort((a, b) => a.name.localeCompare(b.name, 'vi'));
-            } else if (sortOrder === 'name-desc') {
+            } else if (filters.sort === 'name-desc') {
                 songs.sort((a, b) => b.name.localeCompare(a.name, 'vi'));
             }
 
@@ -555,12 +580,18 @@ function generateHTML(data) {
             return card;
         }
 
-        // Tab switching
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                currentCategory = tab.dataset.category;
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filterType = btn.dataset.filter;
+                const filterValue = btn.dataset.value;
+                
+                // Remove active class from siblings
+                btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update filter
+                filters[filterType] = filterValue;
                 renderSongs();
             });
         });
@@ -568,18 +599,6 @@ function generateHTML(data) {
         // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             searchQuery = e.target.value;
-            renderSongs();
-        });
-
-        // Type filter
-        document.getElementById('typeFilter').addEventListener('change', (e) => {
-            typeFilter = e.target.value;
-            renderSongs();
-        });
-
-        // Sort filter
-        document.getElementById('sortFilter').addEventListener('change', (e) => {
-            sortOrder = e.target.value;
             renderSongs();
         });
 
