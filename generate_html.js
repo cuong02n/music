@@ -463,6 +463,15 @@ function generateHTML(data) {
         };
         let searchQuery = '';
 
+        // Function to remove Vietnamese diacritics
+        function removeDiacritics(str) {
+            return str.normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
         function updateStats() {
             const totalSongs = (songsData['printed']?.length || 0) + (songsData['not print']?.length || 0);
             let totalFiles = 0;
@@ -497,8 +506,9 @@ function generateHTML(data) {
 
             // Filter by search
             if (searchQuery) {
+                const normalizedQuery = removeDiacritics(searchQuery);
                 songs = songs.filter(song => 
-                    song.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    removeDiacritics(song.name).includes(normalizedQuery)
                 );
             }
 
