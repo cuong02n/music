@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư Viện Nhạc Piano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .search-box {
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .tab:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .song-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .song-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .song-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .song-details {
+            margin-top: 15px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .detail-row:hover {
+            background: #e9ecef;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .badge.difficulty {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .badge.type-piano {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+        }
+
+        .badge.type-chord {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .badge.type-midi {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .file-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .file-link:hover {
+            color: #764ba2;
+            gap: 8px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .songs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎹 Thư Viện Nhạc Piano</h1>
+            <p class="subtitle">Bộ sưu tập sheet nhạc của bạn</p>
+            <div class="stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalSongs">0</span>
+                    <span>Bài hát</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalFiles">0</span>
+                    <span>Files</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Tìm kiếm bài hát...">
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-category="all">Tất cả</button>
+            <button class="tab" data-category="printed">Đã in</button>
+            <button class="tab" data-category="not print">Chưa in</button>
+        </div>
+
+        <div class="songs-grid" id="songsGrid"></div>
+        <div class="no-results" id="noResults" style="display: none;">
+            Không tìm thấy bài hát nào 😢
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu được nhúng trực tiếp từ thư mục
+        const songsData = {
+        "not print": [
+                {
+                        "name": "E là không thể",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "E là không thể.pdf",
+                                                        "path": "piano/not print/E là không thể/Easy/Piano/E là không thể.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Happy New Year",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Happy New Year.pdf",
+                                                        "path": "piano/not print/Happy New Year/Easy/Piano/Happy New Year.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Korobeiniki - Tetris Theme",
+                        "difficulties": {
+                                "Easy": {
+                                        "MIDI": [
+                                                {
+                                                        "name": "Korobeiniki - Tetris Theme.mid",
+                                                        "path": "piano/not print/Korobeiniki - Tetris Theme/Easy/MIDI/Korobeiniki - Tetris Theme.mid"
+                                                }
+                                        ],
+                                        "Piano": [
+                                                {
+                                                        "name": "korobeiniki truongca.com.pdf",
+                                                        "path": "piano/not print/Korobeiniki - Tetris Theme/Easy/Piano/korobeiniki truongca.com.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Mùa Xuân Đầu Tiên - Văn Cao",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Mua Xuan Dau Tien.pdf",
+                                                        "path": "piano/not print/Mùa Xuân Đầu Tiên - Văn Cao/Easy/Piano/Mua Xuan Dau Tien.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Một Đời",
+                        "difficulties": {
+                                "Easy": {
+                                        "MIDI": [
+                                                {
+                                                        "name": "Mot Doi.mid",
+                                                        "path": "piano/not print/Một Đời/Easy/MIDI/Mot Doi.mid"
+                                                }
+                                        ],
+                                        "Piano": [
+                                                {
+                                                        "name": "Một Đời.pdf",
+                                                        "path": "piano/not print/Một Đời/Easy/Piano/Một Đời.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Người Tình Mùa Đông",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Nguoi Tinh Mua Dong - Piano.pdf",
+                                                        "path": "piano/not print/Người Tình Mùa Đông/Easy/Piano/Nguoi Tinh Mua Dong - Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "The Windy Hill",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "The Windy Hill.pdf",
+                                                        "path": "piano/not print/The Windy Hill/Easy/Piano/The Windy Hill.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Ánh Trăng Nói Hộ Lòng Tôi",
+                        "difficulties": {
+                                "Easy": {
+                                        "MIDI": [
+                                                {
+                                                        "name": "Anh Trang Noi Ho Long Toi.mid",
+                                                        "path": "piano/not print/Ánh Trăng Nói Hộ Lòng Tôi/Easy/MIDI/Anh Trang Noi Ho Long Toi.mid"
+                                                }
+                                        ],
+                                        "Piano": [
+                                                {
+                                                        "name": "Anh Trang Noi Ho Long Toi.pdf",
+                                                        "path": "piano/not print/Ánh Trăng Nói Hộ Lòng Tôi/Easy/Piano/Anh Trang Noi Ho Long Toi.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                }
+        ],
+        "printed": [
+                {
+                        "name": "3107-3",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "3107-3 Piano.pdf",
+                                                        "path": "piano/printed/3107-3/Easy/Piano/3107-3 Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "A Town With An Ocean View",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "A Town With An Ocean View.pdf",
+                                                        "path": "piano/printed/A Town With An Ocean View/Easy/Piano/A Town With An Ocean View.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Ai Mang Cô Đơn Đi",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Ai Mang Co Don Di Piano.pdf",
+                                                        "path": "piano/printed/Ai Mang Cô Đơn Đi/Easy/Piano/Ai Mang Co Don Di Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Anh Thanh Niên",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Anh Thanh Nien.pdf",
+                                                        "path": "piano/printed/Anh Thanh Niên/Easy/Piano/Anh Thanh Nien.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Anh Ơi Anh Ơi Em Nào Có Tội",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Anh Oi Anh Oi Em Nao Co Toi Piano.pdf",
+                                                        "path": "piano/printed/Anh Ơi Anh Ơi Em Nào Có Tội/Easy/Piano/Anh Oi Anh Oi Em Nao Co Toi Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Cha Già Rồi Đúng Không",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Cha Gia Roi Dung Khong Piano.pdf",
+                                                        "path": "piano/printed/Cha Già Rồi Đúng Không/Easy/Piano/Cha Gia Roi Dung Khong Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Chiếc Đèn Ông Sao",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Chiec Den Ong Sao.pdf",
+                                                        "path": "piano/printed/Chiếc Đèn Ông Sao/Easy/Piano/Chiec Den Ong Sao.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Chiều Thu Hoa Bóng Nắng",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Chieu Thu Hoa Bong Nang Piano.pdf",
+                                                        "path": "piano/printed/Chiều Thu Hoa Bóng Nắng/Easy/Piano/Chieu Thu Hoa Bong Nang Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Chuyện Cũ Bỏ Qua",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Chuyen Cu Bo Qua Piano.pdf",
+                                                        "path": "piano/printed/Chuyện Cũ Bỏ Qua/Easy/Piano/Chuyen Cu Bo Qua Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Coffin Dance",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Coffin Dance.pdf",
+                                                        "path": "piano/printed/Coffin Dance/Easy/Piano/Coffin Dance.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Cánh Hoa Tàn",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Canh Hoa Tan.pdf",
+                                                        "path": "piano/printed/Cánh Hoa Tàn/Easy/Piano/Canh Hoa Tan.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Cây Dạ Quán Độc",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Cay Da Quan Doc.pdf",
+                                                        "path": "piano/printed/Cây Dạ Quán Độc/Easy/Piano/Cay Da Quan Doc.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Còn Gì Đẹp Hơn",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Con Gi Dep Hon Piano.pdf",
+                                                        "path": "piano/printed/Còn Gì Đẹp Hơn/Easy/Piano/Con Gi Dep Hon Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Có Chắc Yêu Là Đây",
+                        "difficulties": {
+                                "Easy": {
+                                        "Chord-Dm": [
+                                                {
+                                                        "name": "Co Chac Yeu La Day Piano-Dm.pdf",
+                                                        "path": "piano/printed/Có Chắc Yêu Là Đây/Easy/Chord-Dm/Co Chac Yeu La Day Piano-Dm.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Cô Bé Mùa Đông",
+                        "difficulties": {
+                                "Easy": {
+                                        "Chord-Am": [
+                                                {
+                                                        "name": "Co Be Mua Dong Piano-Am.pdf",
+                                                        "path": "piano/printed/Cô Bé Mùa Đông/Easy/Chord-Am/Co Be Mua Dong Piano-Am.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Cô Giang Tình",
+                        "difficulties": {
+                                "Easy": {
+                                        "Chord-Em": [
+                                                {
+                                                        "name": "Co Giang Tinh Piano-Em.pdf",
+                                                        "path": "piano/printed/Cô Giang Tình/Easy/Chord-Em/Co Giang Tinh Piano-Em.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Cứ Vui Lên - Mỹ Tâm",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Cu Vui Len Piano - My Tam.pdf",
+                                                        "path": "piano/printed/Cứ Vui Lên - Mỹ Tâm/Easy/Piano/Cu Vui Len Piano - My Tam.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Dòm Dóm",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Dom Dom Piano.pdf",
+                                                        "path": "piano/printed/Dòm Dóm/Easy/Piano/Dom Dom Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Dòng Phải Mở Dạng Ai",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Dong Phai Mo Dang Ai Piano.pdf",
+                                                        "path": "piano/printed/Dòng Phải Mở Dạng Ai/Easy/Piano/Dong Phai Mo Dang Ai Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Dù Cho Tận Thế",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Du Cho Tan The Piano.pdf",
+                                                        "path": "piano/printed/Dù Cho Tận Thế/Easy/Piano/Du Cho Tan The Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Dừng Cùng Thành Sai",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Dung Cung Thanh Sai Piano.pdf",
+                                                        "path": "piano/printed/Dừng Cùng Thành Sai/Easy/Piano/Dung Cung Thanh Sai Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Em Không Sai Chúng Ta Sai",
+                        "difficulties": {
+                                "Easy": {
+                                        "Chord-C": [
+                                                {
+                                                        "name": "Em Khong Sai Chung Ta Sai Piano-C.pdf",
+                                                        "path": "piano/printed/Em Không Sai Chúng Ta Sai/Easy/Chord-C/Em Khong Sai Chung Ta Sai Piano-C.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Fur Elise",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Fur Elise.pdf",
+                                                        "path": "piano/printed/Fur Elise/Easy/Piano/Fur Elise.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Giấc Mơ Trưa",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Giac Mo Trua Piano - C.pdf",
+                                                        "path": "piano/printed/Giấc Mơ Trưa/Easy/Piano/Giac Mo Trua Piano - C.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Gặp Nhau Giữa Rừng Mơ",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Gap Nhau Giua Rung Mo.pdf",
+                                                        "path": "piano/printed/Gặp Nhau Giữa Rừng Mơ/Easy/Piano/Gap Nhau Giua Rung Mo.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Happy Birthday",
+                        "difficulties": {
+                                "Easy": {
+                                        "MIDI": [
+                                                {
+                                                        "name": "Happy Birthday.mid",
+                                                        "path": "piano/printed/Happy Birthday/Easy/MIDI/Happy Birthday.mid"
+                                                }
+                                        ],
+                                        "Piano": [
+                                                {
+                                                        "name": "HAPPY BIRRTHDAY.pdf",
+                                                        "path": "piano/printed/Happy Birthday/Easy/Piano/HAPPY BIRRTHDAY.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hoa Cỏ Lau",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Hoa Co Lau Piano.pdf",
+                                                        "path": "piano/printed/Hoa Cỏ Lau/Easy/Piano/Hoa Co Lau Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hoa Hải Đường",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Hoa Hai Duong Piano.pdf",
+                                                        "path": "piano/printed/Hoa Hải Đường/Easy/Piano/Hoa Hai Duong Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hoa Nở Không Màu",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Hoa No Khong Mau Piano - Am.pdf",
+                                                        "path": "piano/printed/Hoa Nở Không Màu/Easy/Piano/Hoa No Khong Mau Piano - Am.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hãy Trao Cho Anh",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Hay Trao Cho Anh Piano.pdf",
+                                                        "path": "piano/printed/Hãy Trao Cho Anh/Easy/Piano/Hay Trao Cho Anh Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hơn Cả Yêu",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Hon Ca Yeu Piano.pdf",
+                                                        "path": "piano/printed/Hơn Cả Yêu/Easy/Piano/Hon Ca Yeu Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hơn Đã Cô Đơn",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Hon Da Co Don Piano.pdf",
+                                                        "path": "piano/printed/Hơn Đã Cô Đơn/Easy/Piano/Hon Da Co Don Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hạ Còn Vương Nắng",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Ha Con Vuong Nang Piano.pdf",
+                                                        "path": "piano/printed/Hạ Còn Vương Nắng/Easy/Piano/Ha Con Vuong Nang Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Hẹn Em Kiếp Sau",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Hen Em Kiep Sau Piano.pdf",
+                                                        "path": "piano/printed/Hẹn Em Kiếp Sau/Easy/Piano/Hen Em Kiep Sau Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Không Thể Cùng Nhau Suốt Kiếp",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Khong The Cung Nhau Suot Kiep Piano.pdf",
+                                                        "path": "piano/printed/Không Thể Cùng Nhau Suốt Kiếp/Easy/Piano/Khong The Cung Nhau Suot Kiep Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Khúc Giao Mùa",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Khuc Giao Mua Piano.pdf",
+                                                        "path": "piano/printed/Khúc Giao Mùa/Easy/Piano/Khuc Giao Mua Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Khúc Hát Mừng Sinh Nhật",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Khuc Hat Mung Sinh Nhat Piano.pdf",
+                                                        "path": "piano/printed/Khúc Hát Mừng Sinh Nhật/Easy/Piano/Khuc Hat Mung Sinh Nhat Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Là Anh",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "La Anh Piano.pdf",
+                                                        "path": "piano/printed/Là Anh/Easy/Piano/La Anh Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Mình Cùng Nhau Đóng Băng",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Minh Cung Nhau Dong Bang.pdf",
+                                                        "path": "piano/printed/Mình Cùng Nhau Đóng Băng/Easy/Piano/Minh Cung Nhau Dong Bang.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Mưa Tháng 6",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Mua Thang 6 Piano.pdf",
+                                                        "path": "piano/printed/Mưa Tháng 6/Easy/Piano/Mua Thang 6 Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Mắt Ngọt",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Mat Ngot Piano.pdf",
+                                                        "path": "piano/printed/Mắt Ngọt/Easy/Piano/Mat Ngot Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Một Nhà",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Mot Nha Piano.pdf",
+                                                        "path": "piano/printed/Một Nhà/Easy/Piano/Mot Nha Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Một Năm Mới Bình An",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Mot Nam Moi Binh An Piano.pdf",
+                                                        "path": "piano/printed/Một Năm Mới Bình An/Easy/Piano/Mot Nam Moi Binh An Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Mời Chúa Vui Trung Thu",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Moi Chua Vui Trung Thu Piano.pdf",
+                                                        "path": "piano/printed/Mời Chúa Vui Trung Thu/Easy/Piano/Moi Chua Vui Trung Thu Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Ngày Mai Người Ta Lấy Chồng",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Ngay Mai Nguoi Ta Lay Chong Piano - Bm.pdf",
+                                                        "path": "piano/printed/Ngày Mai Người Ta Lấy Chồng/Easy/Piano/Ngay Mai Nguoi Ta Lay Chong Piano - Bm.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Ngày Đầu Tiên - Đức Phúc",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Ngay Dau Tien Piano - Duc Phuc.pdf",
+                                                        "path": "piano/printed/Ngày Đầu Tiên - Đức Phúc/Easy/Piano/Ngay Dau Tien Piano - Duc Phuc.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Người Lạ Thoáng Qua",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Nguoi La Thoang Qua Piano.pdf",
+                                                        "path": "piano/printed/Người Lạ Thoáng Qua/Easy/Piano/Nguoi La Thoang Qua Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Nàng Thơ",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Nang Tho Piano.pdf",
+                                                        "path": "piano/printed/Nàng Thơ/Easy/Piano/Nang Tho Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Nơi Mình Dừng Chân",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Noi Minh Dung Chan Piano.pdf",
+                                                        "path": "piano/printed/Nơi Mình Dừng Chân/Easy/Piano/Noi Minh Dung Chan Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Nắm Bàn Tay Say Cả Đời",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Nam Ban Tay Say Ca Doi Piano.pdf",
+                                                        "path": "piano/printed/Nắm Bàn Tay Say Cả Đời/Easy/Piano/Nam Ban Tay Say Ca Doi Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Phép Màu",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Phep Mau.pdf",
+                                                        "path": "piano/printed/Phép Màu/Easy/Piano/Phep Mau.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Thu Cuối",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Thu Cuoi.pdf",
+                                                        "path": "piano/printed/Thu Cuối/Easy/Piano/Thu Cuoi.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Tìm Lại Bầu Trời",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Tim Lai Bau Troi Piano.pdf",
+                                                        "path": "piano/printed/Tìm Lại Bầu Trời/Easy/Piano/Tim Lai Bau Troi Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Tất Cả Hoặc Không Là Gì Cả",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Tat Ca Hoac Khong La Gi Ca Piano.pdf",
+                                                        "path": "piano/printed/Tất Cả Hoặc Không Là Gì Cả/Easy/Piano/Tat Ca Hoac Khong La Gi Ca Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "We Wish You a Merry Christmas Easy",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "We Wish You a Merry Christmas Easy.pdf",
+                                                        "path": "piano/printed/We Wish You a Merry Christmas Easy/Easy/Piano/We Wish You a Merry Christmas Easy.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Yên Vô Hiết",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Yen Vo Hiet.pdf",
+                                                        "path": "piano/printed/Yên Vô Hiết/Easy/Piano/Yen Vo Hiet.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Ít Nhưng Dài Lâu",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "It Nhung Dai Lau Piano.pdf",
+                                                        "path": "piano/printed/Ít Nhưng Dài Lâu/Easy/Piano/It Nhung Dai Lau Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Ăn Sáng Nhà",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "An Sang Nha.pdf",
+                                                        "path": "piano/printed/Ăn Sáng Nhà/Easy/Piano/An Sang Nha.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Đi Về Nhà",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Di Ve Nha.pdf",
+                                                        "path": "piano/printed/Đi Về Nhà/Easy/Piano/Di Ve Nha.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Đầu Xuân Cầu Cho Gia Đình",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Dau Xuan Cau Cho Gia Dinh Piano.pdf",
+                                                        "path": "piano/printed/Đầu Xuân Cầu Cho Gia Đình/Easy/Piano/Dau Xuan Cau Cho Gia Dinh Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Đừng Làm Trái Tim Anh Đau",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "Dung Lam Trai Tim Anh Dau Piano.pdf",
+                                                        "path": "piano/printed/Đừng Làm Trái Tim Anh Đau/Easy/Piano/Dung Lam Trai Tim Anh Dau Piano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                },
+                {
+                        "name": "Đừng Thương",
+                        "difficulties": {
+                                "Easy": {
+                                        "Piano": [
+                                                {
+                                                        "name": "DungThuongPiano.pdf",
+                                                        "path": "piano/printed/Đừng Thương/Easy/Piano/DungThuongPiano.pdf"
+                                                }
+                                        ]
+                                }
+                        }
+                }
+        ]
+};
+        
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        // Update statistics
+        function updateStats() {
+            const totalSongs = (songsData['printed']?.length || 0) + (songsData['not print']?.length || 0);
+            let totalFiles = 0;
+
+            ['printed', 'not print'].forEach(category => {
+                songsData[category]?.forEach(song => {
+                    Object.values(song.difficulties).forEach(difficulty => {
+                        Object.values(difficulty).forEach(files => {
+                            totalFiles += files.length;
+                        });
+                    });
+                });
+            });
+
+            document.getElementById('totalSongs').textContent = totalSongs;
+            document.getElementById('totalFiles').textContent = totalFiles;
+        }
+
+        // Render songs
+        function renderSongs() {
+            const grid = document.getElementById('songsGrid');
+            const noResults = document.getElementById('noResults');
+            grid.innerHTML = '';
+
+            let songs = [];
+            if (currentCategory === 'all') {
+                songs = [...(songsData['printed'] || []), ...(songsData['not print'] || [])];
+            } else {
+                songs = songsData[currentCategory] || [];
+            }
+
+            // Filter by search
+            if (searchQuery) {
+                songs = songs.filter(song => 
+                    song.name.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
+
+            if (songs.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            songs.forEach(song => {
+                const card = createSongCard(song);
+                grid.appendChild(card);
+            });
+        }
+
+        // Create song card
+        function createSongCard(song) {
+            const card = document.createElement('div');
+            card.className = 'song-card';
+
+            let detailsHTML = '';
+            Object.entries(song.difficulties).forEach(([difficulty, types]) => {
+                Object.entries(types).forEach(([type, files]) => {
+                    files.forEach(file => {
+                        const typeClass = type.toLowerCase().includes('chord') ? 'type-chord' : 
+                                        type.toLowerCase() === 'midi' ? 'type-midi' : 'type-piano';
+                        detailsHTML += `
+                            <div class="detail-row">
+                                <span class="badge difficulty">${difficulty}</span>
+                                <span class="badge ${typeClass}">${type}</span>
+                                <a href="${file.path}" class="file-link" target="_blank">
+                                    📄 ${file.name}
+                                </a>
+                            </div>
+                        `;
+                    });
+                });
+            });
+
+            card.innerHTML = `
+                <div class="song-title">
+                    <div class="song-icon">🎵</div>
+                    <span>${song.name}</span>
+                </div>
+                <div class="song-details">
+                    ${detailsHTML}
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCategory = tab.dataset.category;
+                renderSongs();
+            });
+        });
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderSongs();
+        });
+
+        // Initialize
+        updateStats();
+        renderSongs();
+    </script>
+</body>
+</html>
