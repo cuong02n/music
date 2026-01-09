@@ -154,6 +154,52 @@ function generateHTML(data) {
             transform: translateY(-2px);
         }
 
+        .filters-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 12px;
+        }
+
+        .filter-label {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
         .tabs {
             display: flex;
             gap: 15px;
@@ -361,6 +407,25 @@ function generateHTML(data) {
             <input type="text" class="search-input" id="searchInput" placeholder="🔍 Tìm kiếm bài hát...">
         </div>
 
+        <div class="filters-bar">
+            <div class="filter-group">
+                <span class="filter-label">Loại:</span>
+                <select class="filter-select" id="typeFilter">
+                    <option value="all">Tất cả</option>
+                    <option value="piano">Piano</option>
+                    <option value="midi">MIDI</option>
+                    <option value="chord">Chord</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Sắp xếp:</span>
+                <select class="filter-select" id="sortFilter">
+                    <option value="name-asc">A → Z</option>
+                    <option value="name-desc">Z → A</option>
+                </select>
+            </div>
+        </div>
+
         <div class="tabs">
             <button class="tab active" data-category="all">Tất cả</button>
             <button class="tab" data-category="printed">Đã in</button>
@@ -378,6 +443,8 @@ function generateHTML(data) {
         
         let currentCategory = 'all';
         let searchQuery = '';
+        let typeFilter = 'all';
+        let sortOrder = 'name-asc';
 
         function updateStats() {
             const totalSongs = (songsData['printed']?.length || 0) + (songsData['not print']?.length || 0);
@@ -409,10 +476,32 @@ function generateHTML(data) {
                 songs = songsData[currentCategory] || [];
             }
 
+            // Filter by search
             if (searchQuery) {
                 songs = songs.filter(song => 
                     song.name.toLowerCase().includes(searchQuery.toLowerCase())
                 );
+            }
+
+            // Filter by type
+            if (typeFilter !== 'all') {
+                songs = songs.filter(song => {
+                    return Object.values(song.difficulties).some(difficulty => {
+                        return Object.keys(difficulty).some(type => {
+                            if (typeFilter === 'piano') return type.toLowerCase() === 'piano';
+                            if (typeFilter === 'midi') return type.toLowerCase() === 'midi';
+                            if (typeFilter === 'chord') return type.toLowerCase().includes('chord');
+                            return false;
+                        });
+                    });
+                });
+            }
+
+            // Sort
+            if (sortOrder === 'name-asc') {
+                songs.sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+            } else if (sortOrder === 'name-desc') {
+                songs.sort((a, b) => b.name.localeCompare(a.name, 'vi'));
             }
 
             if (songs.length === 0) {
@@ -466,6 +555,7 @@ function generateHTML(data) {
             return card;
         }
 
+        // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -475,8 +565,21 @@ function generateHTML(data) {
             });
         });
 
+        // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             searchQuery = e.target.value;
+            renderSongs();
+        });
+
+        // Type filter
+        document.getElementById('typeFilter').addEventListener('change', (e) => {
+            typeFilter = e.target.value;
+            renderSongs();
+        });
+
+        // Sort filter
+        document.getElementById('sortFilter').addEventListener('change', (e) => {
+            sortOrder = e.target.value;
             renderSongs();
         });
 
