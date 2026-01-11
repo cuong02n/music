@@ -312,6 +312,14 @@ function generateHTML(data) {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
+        .badge.badge-printed {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        }
+
+        .badge.badge-not-printed {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+        }
+
         .file-link {
             color: #667eea;
             text-decoration: none;
@@ -499,9 +507,11 @@ function generateHTML(data) {
             
             // Filter by print status
             if (filters.print === 'all') {
-                songs = [...(songsData['printed'] || []), ...(songsData['not print'] || [])];
+                const printedSongs = (songsData['printed'] || []).map(s => ({...s, category: 'printed'}));
+                const notPrintSongs = (songsData['not print'] || []).map(s => ({...s, category: 'not print'}));
+                songs = [...printedSongs, ...notPrintSongs];
             } else {
-                songs = songsData[filters.print] || [];
+                songs = (songsData[filters.print] || []).map(s => ({...s, category: filters.print}));
             }
 
             // Filter by search
@@ -578,10 +588,17 @@ function generateHTML(data) {
                 });
             });
 
+            const printBadge = song.category === 'printed' 
+                ? '<span class="badge badge-printed">Đã in</span>' 
+                : '<span class="badge badge-not-printed">Chưa in</span>';
+
             card.innerHTML = \`
                 <div class="song-title">
                     <div class="song-icon">🎵</div>
                     <span>\${song.name}</span>
+                </div>
+                <div style="margin-top: 10px;">
+                    \${printBadge}
                 </div>
                 <div class="song-details">
                     \${detailsHTML}
