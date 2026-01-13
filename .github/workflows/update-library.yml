@@ -30,9 +30,9 @@ jobs:
     - name: Build React app
       run: npm run build
       
-    - name: Commit and push dist
+    - name: Commit and push build files
       run: |
         git config --global user.name 'GitHub Action'
         git config --global user.email 'action@github.com'
-        git add dist/ src/data/songs.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-build: Update dist and songs.json" && git push)
+        git add index.html assets/ src/data/songs.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-build: Update index.html, assets and songs.json" && git push)

@@ -5,4 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ command }) => ({
   plugins: [react()],
   base: command === 'build' ? '/music/' : '/', // Only use /music/ for production build
+  build: {
+    outDir: '.', // Build to root folder for GitHub Pages
+    emptyOutDir: false, // Don't delete other files in root
+  },
 }))

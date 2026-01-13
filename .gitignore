@@ -1,4 +1,4 @@
-# Build output - KEEP dist/ for GitHub Pages deployment
+# Build output - KEEP index.html and assets/ for GitHub Pages
 # dist/
 node_modules/
 
