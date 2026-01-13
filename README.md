@@ -1,5 +1,7 @@
 # 🎹 Piano Library - React App
 
+[![Deploy to GitHub Pages](https://github.com/cuong02n/music/actions/workflows/update-library.yml/badge.svg)](https://github.com/cuong02n/music/actions/workflows/update-library.yml)
+
 Thư viện sheet nhạc piano với giao diện React hiện đại, hỗ trợ tìm kiếm, lọc và quản lý bài hát.
 
 ## ✨ Tính Năng
