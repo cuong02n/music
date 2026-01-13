@@ -3,6 +3,11 @@ name: Update and Deploy Piano Library
 on:
   push:
     branches: ["master"]
+    paths:
+      - 'src/**'
+      - 'public/piano/**'
+      - 'generate_data.cjs'
+      - 'package.json'
   workflow_dispatch:
 
 permissions:
