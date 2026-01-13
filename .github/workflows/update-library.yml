@@ -7,17 +7,9 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  update-and-deploy:
-    environment:
-      name: github-pages
+  build-and-commit:
     runs-on: ubuntu-latest
     
     steps:
@@ -37,15 +29,10 @@ jobs:
     
     - name: Build React app
       run: npm run build
-    
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
       
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: 'dist'
-        
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+    - name: Commit and push dist
+      run: |
+        git config --global user.name 'GitHub Action'
+        git config --global user.email 'action@github.com'
+        git add dist/ src/data/songs.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-build: Update dist and songs.json" && git push)
