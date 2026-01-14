@@ -66,6 +66,7 @@
     border: none;
     border-radius: 20px;
     background: white;
+    color: #333;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
     font-family: 'Inter', sans-serif;
