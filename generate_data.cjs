@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
+// Base path for GitHub Pages deployment
+const BASE_PATH = '/music';
+
 function scanFolders(baseDir) {
     const result = { 'not print': [], 'printed': [] };
     const subDirs = ['not print', 'printed'];
@@ -42,7 +45,7 @@ function scanFolders(baseDir) {
                         const relativePath = path.relative(path.join(baseDir, 'public'), path.join(typePath, f));
                         return {
                             name: f,
-                            path: '/' + relativePath.replace(/\\/g, '/')
+                            path: BASE_PATH + '/' + relativePath.replace(/\\/g, '/')
                         };
                     });
 

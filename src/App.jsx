@@ -125,7 +125,7 @@ function App() {
     });
 
     return { totalSongs, totalFiles };
-  }, []);
+  }, [songsData]);
 
   const handleAddSong = async (songData) => {
     console.log('Đã thêm bài hát:', songData);

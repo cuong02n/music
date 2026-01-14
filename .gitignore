@@ -1,5 +1,5 @@
-# Build output - KEEP index.html and assets/ for GitHub Pages
-# dist/
+# Build output
+dist/
 node_modules/
 
 # Logs
