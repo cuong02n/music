@@ -4,6 +4,7 @@ import Header from './components/Header';
 import FilterSidebar from './components/FilterSidebar';
 import SongGrid from './components/SongGrid';
 import AddSongDialog from './components/AddSongDialog';
+import WishlistButton from './components/WishlistButton';
 import staticSongsData from './data/songs.json';
 import './App.css';
 
@@ -20,6 +21,7 @@ function removeDiacritics(str) {
 function App() {
   const [songsData, setSongsData] = useState({ 'printed': [], 'not print': [] });
   const [loading, setLoading] = useState(true);
+  const [isApiAvailable, setIsApiAvailable] = useState(false);
   const [filters, setFilters] = useState({
     print: 'all',
     type: 'all',
@@ -44,12 +46,14 @@ function App() {
       const data = await response.json();
       console.log('✅ Fetched from API:', (data['printed']?.length || 0) + (data['not print']?.length || 0), 'songs');
       setSongsData(data);
+      setIsApiAvailable(true);
       setLoading(false);
     } catch (error) {
       // Fallback to static JSON (for production/GitHub Pages)
       console.log('⚠️ API not available, using static data');
       console.log('📦 Loaded from songs.json:', (staticSongsData['printed']?.length || 0) + (staticSongsData['not print']?.length || 0), 'songs');
       setSongsData(staticSongsData);
+      setIsApiAvailable(false);
       setLoading(false);
     }
   };
@@ -161,6 +165,7 @@ function App() {
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             onAddClick={() => setAddDialogOpen(true)}
+            isApiAvailable={isApiAvailable}
           />
 
           <Container maxWidth={false} disableGutters sx={{ px: 3 }}>
@@ -194,6 +199,8 @@ function App() {
               {snackbar.message}
             </Alert>
           </Snackbar>
+
+          <WishlistButton isApiAvailable={isApiAvailable} />
         </>
       )}
     </Box>

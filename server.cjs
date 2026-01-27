@@ -145,6 +145,38 @@ app.get('/api/songs', (req, res) => {
     }
 });
 
+// Wishlist endpoints
+const WISHLIST_FILE = path.join(__dirname, 'src', 'data', 'wishlist.json');
+
+// Get wishlist
+app.get('/api/wishlist', (req, res) => {
+    try {
+        if (!fs.existsSync(WISHLIST_FILE)) {
+            // Create empty wishlist if doesn't exist
+            fs.writeFileSync(WISHLIST_FILE, JSON.stringify([]));
+            return res.json([]);
+        }
+        const data = fs.readFileSync(WISHLIST_FILE, 'utf8');
+        res.json(JSON.parse(data));
+    } catch (error) {
+        console.error('Error reading wishlist:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Save wishlist
+app.post('/api/wishlist', (req, res) => {
+    try {
+        const wishlist = req.body;
+        fs.writeFileSync(WISHLIST_FILE, JSON.stringify(wishlist, null, 2));
+        console.log('✅ Wishlist saved successfully');
+        res.json({ success: true, message: 'Wishlist saved' });
+    } catch (error) {
+        console.error('Error saving wishlist:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'Server is running' });

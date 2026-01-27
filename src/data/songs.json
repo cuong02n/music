@@ -1,6 +1,32 @@
 {
   "not print": [
     {
+      "name": "Cause I Love You - Noo Phuoc Thinh",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "Cause I Love You - Noo Phuoc Thinh.pdf",
+              "path": "/music/piano/not print/Cause I Love You - Noo Phuoc Thinh/Easy/Piano/Cause I Love You - Noo Phuoc Thinh.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Có Mình Và Ta (Am)",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "CoÌ MiÌnh VaÌ Ta (Am).pdf",
+              "path": "/music/piano/not print/Có Mình Và Ta (Am)/Easy/Piano/CoÌ MiÌnh VaÌ Ta (Am).pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "E là không thể",
       "difficulties": {
         "Easy": {
@@ -117,6 +143,19 @@
             {
               "name": "Nguoi Tinh Mua Dong - Piano.pdf",
               "path": "/music/piano/not print/Người Tình Mùa Đông/Easy/Piano/Nguoi Tinh Mua Dong - Piano.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Rồi Ta Sẽ Ngắm Pháo Hoa Cùng Nhau",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "Rá»i Ta Sáº½ Ngáº¯m PhÃ¡o Hoa CÃ¹ng Nhau.pdf",
+              "path": "/music/piano/not print/Rồi Ta Sẽ Ngắm Pháo Hoa Cùng Nhau/Easy/Piano/Rá»i Ta Sáº½ Ngáº¯m PhÃ¡o Hoa CÃ¹ng Nhau.pdf"
             }
           ]
         }
