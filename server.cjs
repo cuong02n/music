@@ -5,6 +5,9 @@ const path = require('path');
 const fs = require('fs');
 const { execSync } = require('child_process');
 
+// Base path for URL generation (matches vite.config.js)
+const BASE_PATH = '/music';
+
 const app = express();
 const PORT = 3001;
 
@@ -117,7 +120,7 @@ function scanFolders(baseDir) {
                         const relativePath = path.relative(path.join(baseDir, 'public'), path.join(typePath, f));
                         return {
                             name: f,
-                            path: '/' + relativePath.replace(/\\/g, '/')
+                            path: BASE_PATH + '/' + relativePath.replace(/\\/g, '/')
                         };
                     });
 
