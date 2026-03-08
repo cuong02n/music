@@ -79,8 +79,25 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     }
 });
 
+// Load saved addedAt timestamps from songs.json to keep them stable
+function loadSavedAddedAt() {
+    const jsonPath = path.join(__dirname, 'src', 'data', 'songs.json');
+    if (!fs.existsSync(jsonPath)) return {};
+    try {
+        const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        const map = {};
+        ['printed', 'not print'].forEach(cat => {
+            (raw[cat] || []).forEach(song => {
+                if (song.addedAt) map[song.name] = song.addedAt;
+            });
+        });
+        return map;
+    } catch { return {}; }
+}
+
 // Function to scan folders (same as generate_data.cjs)
 function scanFolders(baseDir) {
+    const savedAddedAt = loadSavedAddedAt();
     const result = { 'not print': [], 'printed': [] };
     const subDirs = ['not print', 'printed'];
 
@@ -97,6 +114,7 @@ function scanFolders(baseDir) {
 
             const songData = {
                 name: songFolder,
+                addedAt: savedAddedAt[songFolder] ?? Date.now(),
                 difficulties: {}
             };
 
@@ -144,6 +162,45 @@ app.get('/api/songs', (req, res) => {
         res.json(data);
     } catch (error) {
         console.error('Error scanning folders:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Toggle print status: move song folder between 'printed' <-> 'not print'
+app.patch('/api/songs/:name/toggle-print', (req, res) => {
+    try {
+        const songName = decodeURIComponent(req.params.name);
+        const { currentStatus } = req.body; // 'printed' or 'not print'
+
+        if (!currentStatus || !['printed', 'not print'].includes(currentStatus)) {
+            return res.status(400).json({ error: 'Invalid currentStatus' });
+        }
+
+        const newStatus = currentStatus === 'printed' ? 'not print' : 'printed';
+        const baseDir = path.join(__dirname, 'public', 'piano');
+        const srcPath = path.join(baseDir, currentStatus, songName);
+        const destPath = path.join(baseDir, newStatus, songName);
+
+        if (!fs.existsSync(srcPath)) {
+            return res.status(404).json({ error: `Song folder not found: ${srcPath}` });
+        }
+
+        // Ensure destination parent exists
+        fs.mkdirSync(path.join(baseDir, newStatus), { recursive: true });
+        fs.renameSync(srcPath, destPath);
+
+        console.log(`✅ Moved "${songName}" from "${currentStatus}" to "${newStatus}"`);
+
+        // Regenerate songs.json
+        try {
+            execSync('node generate_data.cjs', { cwd: __dirname });
+        } catch (err) {
+            console.error('⚠️ Lỗi khi cập nhật songs.json:', err.message);
+        }
+
+        res.json({ success: true, newStatus });
+    } catch (error) {
+        console.error('Error toggling print status:', error);
         res.status(500).json({ error: error.message });
     }
 });

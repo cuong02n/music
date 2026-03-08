@@ -26,7 +26,7 @@ function App() {
     print: 'all',
     type: 'all',
     difficulty: 'all',
-    sort: 'name-asc'
+    sort: 'date-new'
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -107,6 +107,10 @@ function App() {
       songs.sort((a, b) => a.name.localeCompare(b.name, 'vi'));
     } else if (filters.sort === 'name-desc') {
       songs.sort((a, b) => b.name.localeCompare(a.name, 'vi'));
+    } else if (filters.sort === 'date-new') {
+      songs.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
+    } else if (filters.sort === 'date-old') {
+      songs.sort((a, b) => (a.addedAt || 0) - (b.addedAt || 0));
     }
 
     console.log('Final filtered songs:', songs.length);
@@ -152,6 +156,30 @@ function App() {
     }
   };
 
+  const handleTogglePrint = async (songName, currentStatus) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3001/api/songs/${encodeURIComponent(songName)}/toggle-print`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ currentStatus })
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Toggle failed');
+      const { newStatus } = data;
+      await fetchSongs();
+      setSnackbar({
+        open: true,
+        message: `✅ "${songName}" chuyển sang "${newStatus === 'printed' ? 'Đã in' : 'Chưa in'}"`,
+        severity: 'success'
+      });
+    } catch (err) {
+      setSnackbar({ open: true, message: `❌ Lỗi: ${err.message}`, severity: 'error' });
+    }
+  };
+
   return (
     <Box className="app">
       {loading ? (
@@ -178,7 +206,7 @@ function App() {
               </Grid>
 
               <Grid size={{ xs: 12, md: 9, lg: 10 }}>
-                <SongGrid songs={filteredSongs} />
+                <SongGrid songs={filteredSongs} onTogglePrint={isApiAvailable ? handleTogglePrint : null} />
               </Grid>
             </Grid>
           </Container>

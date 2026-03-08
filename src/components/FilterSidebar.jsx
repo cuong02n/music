@@ -99,6 +99,18 @@ function FilterSidebar({ filters, onFilterChange }) {
                     <span className="filter-label">🔤 Sắp xếp</span>
                     <div className="filter-buttons">
                         <button
+                            className={`filter-btn ${filters.sort === 'date-new' ? 'active' : ''}`}
+                            onClick={() => handleFilterClick('sort', 'date-new')}
+                        >
+                            🕐 Mới nhất
+                        </button>
+                        <button
+                            className={`filter-btn ${filters.sort === 'date-old' ? 'active' : ''}`}
+                            onClick={() => handleFilterClick('sort', 'date-old')}
+                        >
+                            🕰 Cũ nhất
+                        </button>
+                        <button
                             className={`filter-btn ${filters.sort === 'name-asc' ? 'active' : ''}`}
                             onClick={() => handleFilterClick('sort', 'name-asc')}
                         >

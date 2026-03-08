@@ -1,11 +1,17 @@
+import { useState } from 'react';
 import './SongCard.css';
 
-function SongCard({ song }) {
-    const printBadge = song.category === 'printed' ? (
-        <span className="badge badge-printed">Đã in</span>
-    ) : (
-        <span className="badge badge-not-printed">Chưa in</span>
-    );
+function SongCard({ song, onTogglePrint }) {
+    const [toggling, setToggling] = useState(false);
+
+    const isPrinted = song.category === 'printed';
+
+    const handleToggle = async () => {
+        if (!onTogglePrint || toggling) return;
+        setToggling(true);
+        await onTogglePrint(song.name, song.category);
+        setToggling(false);
+    };
 
     return (
         <div className="song-card">
@@ -14,8 +20,20 @@ function SongCard({ song }) {
                 <span>{song.name}</span>
             </div>
 
-            <div style={{ marginTop: '10px' }}>
-                {printBadge}
+            <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className={`badge ${isPrinted ? 'badge-printed' : 'badge-not-printed'}`}>
+                    {isPrinted ? 'Đã in' : 'Chưa in'}
+                </span>
+                {onTogglePrint && (
+                    <button
+                        className="toggle-print-btn"
+                        onClick={handleToggle}
+                        disabled={toggling}
+                        title={isPrinted ? 'Đánh dấu chưa in' : 'Đánh dấu đã in'}
+                    >
+                        {toggling ? '⏳' : isPrinted ? '↩ Chưa in' : '✔ Đã in'}
+                    </button>
+                )}
             </div>
 
             <div className="song-details">
