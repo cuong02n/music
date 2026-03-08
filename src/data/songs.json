@@ -14,6 +14,19 @@
       }
     },
     {
+      "name": "Chẳng hợp nhau đâu",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "ChaÌÌng hoÌÌ£p nhau ÄaÌu.pdf",
+              "path": "/music/piano/not print/Chẳng hợp nhau đâu/Easy/Piano/ChaÌÌng hoÌÌ£p nhau ÄaÌu.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Có Mình Và Ta (Am)",
       "difficulties": {
         "Easy": {
@@ -104,6 +117,19 @@
       }
     },
     {
+      "name": "Lily",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "Lily.pdf",
+              "path": "/music/piano/not print/Lily/Easy/Piano/Lily.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Mùa Xuân Đầu Tiên - Văn Cao",
       "difficulties": {
         "Easy": {
@@ -130,6 +156,19 @@
             {
               "name": "Một Đời.pdf",
               "path": "/music/piano/not print/Một Đời/Easy/Piano/Một Đời.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "NGUYEN_MANH_CUONG_120226-404495_HPV_TMD (2)",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "NGUYEN_MANH_CUONG_120226-404495_HPV_TMD (2).pdf",
+              "path": "/music/piano/not print/NGUYEN_MANH_CUONG_120226-404495_HPV_TMD (2)/Easy/Piano/NGUYEN_MANH_CUONG_120226-404495_HPV_TMD (2).pdf"
             }
           ]
         }
@@ -169,6 +208,45 @@
             {
               "name": "The Windy Hill.pdf",
               "path": "/music/piano/not print/The Windy Hill/Easy/Piano/The Windy Hill.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Thiệp Hồng Sai Tên Am(+1)",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "ThieÌ£Ìp HoÌÌng Sai TeÌn Am(+1).pdf",
+              "path": "/music/piano/not print/Thiệp Hồng Sai Tên Am(+1)/Easy/Piano/ThieÌ£Ìp HoÌÌng Sai TeÌn Am(+1).pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Tháng Tư Là Lời Nói Dối Của Em",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "ThÃ¡ng TÆ° LÃ  Lá»i NÃ³i Dá»i Cá»§a Em.pdf",
+              "path": "/music/piano/not print/Tháng Tư Là Lời Nói Dối Của Em/Easy/Piano/ThÃ¡ng TÆ° LÃ  Lá»i NÃ³i Dá»i Cá»§a Em.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Tình Em Là Đại Dương",
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "TÃ¬nh Em LÃ  Äáº¡i DÆ°Æ¡ng.pdf",
+              "path": "/music/piano/not print/Tình Em Là Đại Dương/Easy/Piano/TÃ¬nh Em LÃ  Äáº¡i DÆ°Æ¡ng.pdf"
             }
           ]
         }
