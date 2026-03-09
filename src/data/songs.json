@@ -43,6 +43,28 @@
       }
     },
     {
+      "name": "Chân Tình",
+      "addedAt": 1773074413065,
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "ChÃ¢n TiÌnh (EASY).pdf",
+              "path": "/music/piano/not print/Chân Tình/Easy/Piano/ChÃ¢n TiÌnh (EASY).pdf"
+            }
+          ]
+        },
+        "Medium": {
+          "Piano": [
+            {
+              "name": "ChÃ¢n TiÌnh (MED).pdf",
+              "path": "/music/piano/not print/Chân Tình/Medium/Piano/ChÃ¢n TiÌnh (MED).pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Có Mình Và Ta (Am)",
       "addedAt": 1769488040286.1194,
       "difficulties": {
