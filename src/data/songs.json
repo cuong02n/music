@@ -79,6 +79,20 @@
       }
     },
     {
+      "name": "Cô Gái Mở Đường",
+      "addedAt": 1773158880236,
+      "difficulties": {
+        "Medium": {
+          "Piano": [
+            {
+              "name": "CÃ´ GÃ¡i Má» ÄÆ°á»ng.pdf",
+              "path": "/music/piano/not print/Cô Gái Mở Đường/Medium/Piano/CÃ´ GÃ¡i Má» ÄÆ°á»ng.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "E là không thể",
       "addedAt": 1768312136676.524,
       "difficulties": {
@@ -307,6 +321,20 @@
       }
     },
     {
+      "name": "Trường Sơn Đông Trường Sơn Tây",
+      "addedAt": 1773158520240,
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "TrÆ°á»ng SÆ¡n ÄÃ´ng TrÆ°á»ng SÆ¡n TÃ¢y.pdf",
+              "path": "/music/piano/not print/Trường Sơn Đông Trường Sơn Tây/Easy/Piano/TrÆ°á»ng SÆ¡n ÄÃ´ng TrÆ°á»ng SÆ¡n TÃ¢y.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Tình Em Là Đại Dương",
       "addedAt": 1772941409270.0652,
       "difficulties": {
@@ -349,6 +377,20 @@
             {
               "name": "Anh Trang Noi Ho Long Toi.pdf",
               "path": "/music/piano/not print/Ánh Trăng Nói Hộ Lòng Tôi/Easy/Piano/Anh Trang Noi Ho Long Toi.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Đêm Trăng Tình Yêu",
+      "addedAt": 1773157767802,
+      "difficulties": {
+        "Hard": {
+          "Piano": [
+            {
+              "name": "ÄÃªm TrÄng TÃ¬nh YÃªu.pdf",
+              "path": "/music/piano/not print/Đêm Trăng Tình Yêu/Hard/Piano/ÄÃªm TrÄng TÃ¬nh YÃªu.pdf"
             }
           ]
         }
