@@ -29,6 +29,20 @@
       }
     },
     {
+      "name": "Chiếc khăn gió ấm",
+      "addedAt": 1776699560005,
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "ChiÃªÌc khÄn gioÌ Ã¢Ìm.pdf",
+              "path": "/music/piano/not print/Chiếc khăn gió ấm/Easy/Piano/ChiÃªÌc khÄn gioÌ Ã¢Ìm.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Chuyện Đôi Ta",
       "addedAt": 1772956955900,
       "difficulties": {
