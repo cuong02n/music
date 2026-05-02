@@ -52,8 +52,12 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
         // Tạo thư mục nếu chưa tồn tại
         fs.mkdirSync(folderPath, { recursive: true });
 
+        // Fix encoding: multer decodes originalname as Latin-1 by default,
+        // need to re-encode to UTF-8 for Vietnamese filenames
+        const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+
         // Lưu file
-        const filePath = path.join(folderPath, file.originalname);
+        const filePath = path.join(folderPath, originalName);
         fs.writeFileSync(filePath, file.buffer);
 
         console.log(`✅ Đã lưu file: ${filePath}`);
@@ -70,7 +74,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
         res.json({
             success: true,
             message: 'File uploaded successfully',
-            path: `${printStatus}/${name}/${difficulty}/${type}/${file.originalname}`
+            path: `${printStatus}/${name}/${difficulty}/${type}/${originalName}`
         });
 
     } catch (error) {

@@ -35,8 +35,8 @@
         "Easy": {
           "Piano": [
             {
-              "name": "ChiÃªÌc khÄn gioÌ Ã¢Ìm.pdf",
-              "path": "/music/piano/not print/Chiếc khăn gió ấm/Easy/Piano/ChiÃªÌc khÄn gioÌ Ã¢Ìm.pdf"
+              "name": "Chiếc khăn gió ấm.pdf",
+              "path": "/music/piano/not print/Chiếc khăn gió ấm/Easy/Piano/Chiếc khăn gió ấm.pdf"
             }
           ]
         }
@@ -245,6 +245,34 @@
       }
     },
     {
+      "name": "Mariage d'Amour",
+      "addedAt": 1777721612875,
+      "difficulties": {
+        "Medium": {
+          "Piano": [
+            {
+              "name": "Mariage d'Amour.pdf",
+              "path": "/music/piano/not print/Mariage d'Amour/Medium/Piano/Mariage d'Amour.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Merry Go Round of Life",
+      "addedAt": 1777721919078,
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "Merry Go Round of Life.pdf",
+              "path": "/music/piano/not print/Merry Go Round of Life/Easy/Piano/Merry Go Round of Life.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Mùa Xuân Đầu Tiên - Văn Cao",
       "addedAt": 1768312136701.6377,
       "difficulties": {
@@ -281,6 +309,20 @@
             {
               "name": "Nguoi Tinh Mua Dong - Piano.pdf",
               "path": "/music/piano/not print/Người Tình Mùa Đông/Easy/Piano/Nguoi Tinh Mua Dong - Piano.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "River Flows In You",
+      "addedAt": 1777722216923,
+      "difficulties": {
+        "Hard": {
+          "Piano": [
+            {
+              "name": "River Flows In You.pdf",
+              "path": "/music/piano/not print/River Flows In You/Hard/Piano/River Flows In You.pdf"
             }
           ]
         }
@@ -365,6 +407,20 @@
             {
               "name": "TrÆ°á»ng SÆ¡n ÄÃ´ng TrÆ°á»ng SÆ¡n TÃ¢y.pdf",
               "path": "/music/piano/not print/Trường Sơn Đông Trường Sơn Tây/Easy/Piano/TrÆ°á»ng SÆ¡n ÄÃ´ng TrÆ°á»ng SÆ¡n TÃ¢y.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Trạng Thái Mộng Mơ(3)",
+      "addedAt": 1777721793661,
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "Trạng Thái Mộng Mơ(3).pdf",
+              "path": "/music/piano/not print/Trạng Thái Mộng Mơ(3)/Easy/Piano/Trạng Thái Mộng Mơ(3).pdf"
             }
           ]
         }
