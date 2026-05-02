@@ -121,6 +121,20 @@
       }
     },
     {
+      "name": "Diễm xưa",
+      "addedAt": 1777723066483,
+      "difficulties": {
+        "Medium": {
+          "Piano": [
+            {
+              "name": "Diễm xưa.pdf",
+              "path": "/music/piano/not print/Diễm xưa/Medium/Piano/Diễm xưa.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "E là không thể",
       "addedAt": 1768312136676.524,
       "difficulties": {
