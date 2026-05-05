@@ -273,6 +273,20 @@
       }
     },
     {
+      "name": "Marriage D' Amour (2)",
+      "addedAt": 1778024112431,
+      "difficulties": {
+        "Medium": {
+          "Piano": [
+            {
+              "name": "Marriage D' Amour (2).pdf",
+              "path": "/music/piano/not print/Marriage D' Amour (2)/Medium/Piano/Marriage D' Amour (2).pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "Merry Go Round of Life",
       "addedAt": 1777721919078,
       "difficulties": {
@@ -323,6 +337,20 @@
             {
               "name": "Nguoi Tinh Mua Dong - Piano.pdf",
               "path": "/music/piano/not print/Người Tình Mùa Đông/Easy/Piano/Nguoi Tinh Mua Dong - Piano.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pround of you",
+      "addedAt": 1778024103813,
+      "difficulties": {
+        "Easy": {
+          "Piano": [
+            {
+              "name": "Pround of you.pdf",
+              "path": "/music/piano/not print/Pround of you/Easy/Piano/Pround of you.pdf"
             }
           ]
         }
