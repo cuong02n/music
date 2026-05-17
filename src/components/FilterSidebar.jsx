@@ -11,87 +11,45 @@ function FilterSidebar({ filters, onFilterChange }) {
     return (
         <aside className="filters-sidebar">
             <div className="filters-section">
-                <div className="filter-group">
-                    <span className="filter-label">📂 Trạng thái in</span>
-                    <div className="filter-buttons">
-                        <button
-                            className={`filter-btn ${filters.print === 'all' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('print', 'all')}
-                        >
-                            Tất cả
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.print === 'printed' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('print', 'printed')}
-                        >
-                            Đã in
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.print === 'not print' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('print', 'not print')}
-                        >
-                            Chưa in
-                        </button>
-                    </div>
-                </div>
 
                 <div className="filter-group">
-                    <span className="filter-label">🎹 Loại</span>
-                    <div className="filter-buttons">
-                        <button
-                            className={`filter-btn ${filters.type === 'all' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('type', 'all')}
-                        >
-                            Tất cả
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.type === 'piano' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('type', 'piano')}
-                        >
-                            Piano
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.type === 'midi' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('type', 'midi')}
-                        >
-                            MIDI
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.type === 'chord' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('type', 'chord')}
-                        >
-                            Chord
-                        </button>
-                    </div>
+                    <span className="filter-label">🎹 Loại file</span>
+                    <label className="toggle-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={filters.showMidi}
+                            onChange={e => onFilterChange({ ...filters, showMidi: e.target.checked })}
+                        />
+                        <span className="toggle-track">
+                            <span className="toggle-thumb" />
+                        </span>
+                        <span className="toggle-text">
+                            {filters.showMidi ? 'Hiển thị MIDI' : 'Ẩn MIDI'}
+                        </span>
+                    </label>
                 </div>
 
                 <div className="filter-group">
                     <span className="filter-label">⭐ Độ khó</span>
-                    <div className="filter-buttons">
-                        <button
-                            className={`filter-btn ${filters.difficulty === 'all' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('difficulty', 'all')}
-                        >
-                            Tất cả
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.difficulty === 'Easy' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('difficulty', 'Easy')}
-                        >
-                            Easy
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.difficulty === 'Medium' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('difficulty', 'Medium')}
-                        >
-                            Medium
-                        </button>
-                        <button
-                            className={`filter-btn ${filters.difficulty === 'Hard' ? 'active' : ''}`}
-                            onClick={() => handleFilterClick('difficulty', 'Hard')}
-                        >
-                            Hard
-                        </button>
+                    <div className="filter-radio-list">
+                        {[
+                            { value: 'all',    label: 'Tất cả' },
+                            { value: 'Easy',   label: 'Easy' },
+                            { value: 'Medium', label: 'Medium' },
+                            { value: 'Hard',   label: 'Hard' },
+                        ].map(({ value, label }) => {
+                            const active = filters.difficulty === value;
+                            return (
+                                <button
+                                    key={value}
+                                    className={`filter-radio-item ${active ? 'active' : ''}`}
+                                    onClick={() => handleFilterClick('difficulty', value)}
+                                >
+                                    <span className="filter-radio-tick">{active ? '✓' : ''}</span>
+                                    <span>{label}</span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 

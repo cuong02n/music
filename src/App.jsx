@@ -4,6 +4,7 @@ import Header from './components/Header';
 import FilterSidebar from './components/FilterSidebar';
 import SongGrid from './components/SongGrid';
 import AddSongDialog from './components/AddSongDialog';
+import EditSongDialog from './components/EditSongDialog';
 import WishlistButton from './components/WishlistButton';
 import staticSongsData from './data/songs.json';
 import './App.css';
@@ -19,17 +20,17 @@ function removeDiacritics(str) {
 }
 
 function App() {
-  const [songsData, setSongsData] = useState({ 'printed': [], 'not print': [] });
+  const [songsData, setSongsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isApiAvailable, setIsApiAvailable] = useState(false);
   const [filters, setFilters] = useState({
-    print: 'all',
-    type: 'all',
+    showMidi: false,
     difficulty: 'all',
     sort: 'date-new'
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editSong, setEditSong] = useState(null); // song object being edited
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   // Fetch songs from API
@@ -44,15 +45,22 @@ function App() {
       if (!response.ok) throw new Error('API not available');
 
       const data = await response.json();
-      console.log('✅ Fetched from API:', (data['printed']?.length || 0) + (data['not print']?.length || 0), 'songs');
-      setSongsData(data);
+      // Flatten printed/not print structure if API still returns old format
+      const songs = Array.isArray(data)
+        ? data
+        : [...(data['printed'] || []), ...(data['not print'] || [])];
+      console.log('✅ Fetched from API:', songs.length, 'songs');
+      setSongsData(songs);
       setIsApiAvailable(true);
       setLoading(false);
     } catch (error) {
       // Fallback to static JSON (for production/GitHub Pages)
       console.log('⚠️ API not available, using static data');
-      console.log('📦 Loaded from songs.json:', (staticSongsData['printed']?.length || 0) + (staticSongsData['not print']?.length || 0), 'songs');
-      setSongsData(staticSongsData);
+      const songs = Array.isArray(staticSongsData)
+        ? staticSongsData
+        : [...(staticSongsData['printed'] || []), ...(staticSongsData['not print'] || [])];
+      console.log('📦 Loaded from songs.json:', songs.length, 'songs');
+      setSongsData(songs);
       setIsApiAvailable(false);
       setLoading(false);
     }
@@ -60,18 +68,7 @@ function App() {
 
   // Filter and sort songs
   const filteredSongs = useMemo(() => {
-    let songs = [];
-
-    // Filter by print status
-    if (filters.print === 'all') {
-      const printedSongs = (songsData['printed'] || []).map(s => ({ ...s, category: 'printed' }));
-      const notPrintSongs = (songsData['not print'] || []).map(s => ({ ...s, category: 'not print' }));
-      songs = [...printedSongs, ...notPrintSongs];
-    } else {
-      songs = (songsData[filters.print] || []).map(s => ({ ...s, category: filters.print }));
-    }
-
-    console.log('After print filter:', songs.length, 'songs');
+    let songs = [...songsData];
 
     // Filter by search
     if (searchQuery) {
@@ -81,19 +78,6 @@ function App() {
       );
     }
 
-    // Filter by type
-    if (filters.type !== 'all') {
-      songs = songs.filter(song => {
-        return Object.values(song.difficulties).some(difficulty => {
-          return Object.keys(difficulty).some(type => {
-            if (filters.type === 'piano') return type.toLowerCase() === 'piano';
-            if (filters.type === 'midi') return type.toLowerCase() === 'midi';
-            if (filters.type === 'chord') return type.toLowerCase().includes('chord');
-            return false;
-          });
-        });
-      });
-    }
 
     // Filter by difficulty
     if (filters.difficulty !== 'all') {
@@ -119,15 +103,13 @@ function App() {
 
   // Calculate stats
   const stats = useMemo(() => {
-    const totalSongs = (songsData['printed']?.length || 0) + (songsData['not print']?.length || 0);
+    const totalSongs = songsData.length;
     let totalFiles = 0;
 
-    ['printed', 'not print'].forEach(category => {
-      songsData[category]?.forEach(song => {
-        Object.values(song.difficulties).forEach(difficulty => {
-          Object.values(difficulty).forEach(files => {
-            totalFiles += files.length;
-          });
+    songsData.forEach(song => {
+      Object.values(song.difficulties).forEach(difficulty => {
+        Object.values(difficulty).forEach(files => {
+          totalFiles += files.length;
         });
       });
     });
@@ -156,28 +138,34 @@ function App() {
     }
   };
 
-  const handleTogglePrint = async (songName, currentStatus) => {
+
+
+  const handleDeleteSong = async (songName) => {
     try {
       const res = await fetch(
-        `http://localhost:3001/api/songs/${encodeURIComponent(songName)}/toggle-print`,
-        {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ currentStatus })
-        }
+        `http://localhost:3001/api/songs/${encodeURIComponent(songName)}`,
+        { method: 'DELETE' }
       );
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Toggle failed');
-      const { newStatus } = data;
+      if (!res.ok) throw new Error(data.error || 'Delete failed');
       await fetchSongs();
       setSnackbar({
         open: true,
-        message: `✅ "${songName}" chuyển sang "${newStatus === 'printed' ? 'Đã in' : 'Chưa in'}"`,
+        message: `🗑 Đã xóa "${songName}" thành công`,
         severity: 'success'
       });
     } catch (err) {
       setSnackbar({ open: true, message: `❌ Lỗi: ${err.message}`, severity: 'error' });
     }
+  };
+
+  const handleEditSong = async (result) => {
+    await fetchSongs();
+    setSnackbar({
+      open: true,
+      message: `✏️ Đã cập nhật “${result.name}” thành công`,
+      severity: 'success'
+    });
   };
 
   return (
@@ -206,7 +194,13 @@ function App() {
               </Grid>
 
               <Grid size={{ xs: 12, md: 9, lg: 10 }}>
-                <SongGrid songs={filteredSongs} onTogglePrint={isApiAvailable ? handleTogglePrint : null} />
+                <SongGrid
+                  songs={filteredSongs}
+                  onDelete={isApiAvailable ? handleDeleteSong : null}
+                  onEdit={isApiAvailable ? (song) => setEditSong(song) : null}
+                  showMidi={filters.showMidi}
+                  difficulty={filters.difficulty}
+                />
               </Grid>
             </Grid>
           </Container>
@@ -215,6 +209,13 @@ function App() {
             open={addDialogOpen}
             onClose={() => setAddDialogOpen(false)}
             onAdd={handleAddSong}
+          />
+
+          <EditSongDialog
+            open={Boolean(editSong)}
+            song={editSong}
+            onClose={() => setEditSong(null)}
+            onEdit={handleEditSong}
           />
 
           <Snackbar

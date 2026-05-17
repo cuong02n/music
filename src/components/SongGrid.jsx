@@ -1,7 +1,7 @@
 import SongCard from './SongCard';
 import './SongGrid.css';
 
-function SongGrid({ songs, onTogglePrint }) {
+function SongGrid({ songs, onDelete, onEdit, showMidi, difficulty }) {
     if (songs.length === 0) {
         return (
             <div className="no-results">
@@ -13,7 +13,7 @@ function SongGrid({ songs, onTogglePrint }) {
     return (
         <div className="songs-grid">
             {songs.map((song, index) => (
-                <SongCard key={`${song.name}-${index}`} song={song} onTogglePrint={onTogglePrint} />
+                <SongCard key={`${song.name}-${index}`} song={song} onDelete={onDelete} onEdit={onEdit} showMidi={showMidi} difficulty={difficulty} />
             ))}
         </div>
     );

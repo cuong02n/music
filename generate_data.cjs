@@ -13,10 +13,12 @@ function loadExistingData() {
     try {
         const raw = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
         const map = {};
-        ['printed', 'not print'].forEach(cat => {
-            (raw[cat] || []).forEach(song => {
-                if (song.addedAt) map[song.name] = song.addedAt;
-            });
+        // Support cả format mảng mới lẫn format cũ { printed, 'not print' }
+        const songs = Array.isArray(raw)
+            ? raw
+            : [...(raw['printed'] || []), ...(raw['not print'] || [])];
+        songs.forEach(song => {
+            if (song.addedAt) map[song.name] = song.addedAt;
         });
         return map;
     } catch {
@@ -26,62 +28,68 @@ function loadExistingData() {
 
 function scanFolders(baseDir) {
     const existingAddedAt = loadExistingData();
-    const result = { 'not print': [], 'printed': [] };
-    const subDirs = ['not print', 'printed'];
+    const result = [];
 
-    subDirs.forEach(subDir => {
-        const fullPath = path.join(baseDir, 'public', 'piano', subDir);
-        if (!fs.existsSync(fullPath)) return;
+    const pianoDir = path.join(baseDir, 'public', 'piano');
+    if (!fs.existsSync(pianoDir)) {
+        console.warn('⚠️ Thư mục public/piano không tồn tại');
+        return result;
+    }
 
-        const songFolders = fs.readdirSync(fullPath);
+    const songFolders = fs.readdirSync(pianoDir);
 
-        songFolders.forEach(songFolder => {
-            const songPath = path.join(fullPath, songFolder);
-            const stat = fs.statSync(songPath);
-            if (!stat.isDirectory()) return;
+    songFolders.forEach(songFolder => {
+        const songPath = path.join(pianoDir, songFolder);
+        const stat = fs.statSync(songPath);
+        if (!stat.isDirectory()) return;
 
-            // Preserve existing addedAt; for new songs use current time
-            const addedAt = existingAddedAt[songFolder] ?? Date.now();
+        // Preserve existing addedAt; for new songs use current time
+        const addedAt = existingAddedAt[songFolder] ?? Date.now();
 
-            const songData = {
-                name: songFolder,
-                addedAt,
-                difficulties: {}
-            };
+        const songData = {
+            name: songFolder,
+            addedAt,
+            difficulties: {}
+        };
 
-            const difficultyFolders = fs.readdirSync(songPath);
-            difficultyFolders.forEach(diffFolder => {
-                const diffPath = path.join(songPath, diffFolder);
-                const diffStat = fs.statSync(diffPath);
-                if (!diffStat.isDirectory()) return;
+        const difficultyFolders = fs.readdirSync(songPath);
+        difficultyFolders.forEach(diffFolder => {
+            const diffPath = path.join(songPath, diffFolder);
+            const diffStat = fs.statSync(diffPath);
+            if (!diffStat.isDirectory()) return;
 
-                songData.difficulties[diffFolder] = {};
+            songData.difficulties[diffFolder] = {};
 
-                const typeFolders = fs.readdirSync(diffPath);
-                typeFolders.forEach(typeFolder => {
-                    const typePath = path.join(diffPath, typeFolder);
-                    const typeStat = fs.statSync(typePath);
-                    if (!typeStat.isDirectory()) return;
+            const typeFolders = fs.readdirSync(diffPath);
+            typeFolders.forEach(typeFolder => {
+                const typePath = path.join(diffPath, typeFolder);
+                const typeStat = fs.statSync(typePath);
+                if (!typeStat.isDirectory()) return;
 
-                    const files = fs.readdirSync(typePath).filter(f => {
-                        return fs.statSync(path.join(typePath, f)).isFile();
-                    }).map(f => {
-                        // Path relative to public folder
-                        const relativePath = path.relative(path.join(baseDir, 'public'), path.join(typePath, f));
-                        return {
-                            name: f,
-                            path: BASE_PATH + '/' + relativePath.replace(/\\/g, '/')
-                        };
-                    });
-
-                    if (files.length > 0) {
-                        songData.difficulties[diffFolder][typeFolder] = files;
-                    }
+                const files = fs.readdirSync(typePath).filter(f => {
+                    return fs.statSync(path.join(typePath, f)).isFile();
+                }).map(f => {
+                    // Path relative to public folder
+                    const relativePath = path.relative(path.join(baseDir, 'public'), path.join(typePath, f));
+                    return {
+                        name: f,
+                        path: BASE_PATH + '/' + relativePath.replace(/\\/g, '/')
+                    };
                 });
-            });
 
-            result[subDir].push(songData);
+                if (files.length > 0) {
+                    songData.difficulties[diffFolder][typeFolder] = files;
+                }
+            });
         });
+
+        // Chỉ thêm nếu có ít nhất 1 file
+        const hasFiles = Object.values(songData.difficulties).some(d =>
+            Object.values(d).some(files => files.length > 0)
+        );
+        if (hasFiles) {
+            result.push(songData);
+        }
     });
 
     return result;
@@ -102,5 +110,4 @@ fs.writeFileSync(
 );
 
 console.log('✅ Đã tạo src/data/songs.json');
-console.log(`📊 Tổng số bài hát: ${data['not print'].length + data['printed'].length}`);
-
+console.log(`📊 Tổng số bài hát: ${data.length}`);

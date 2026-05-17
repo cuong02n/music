@@ -13,10 +13,6 @@ function Header({ stats, searchQuery, onSearchChange, onAddClick, isApiAvailable
                     <span className="stat-number">{stats.totalSongs}</span>
                     <span>Bài hát</span>
                 </div>
-                <div className="stat-card">
-                    <span className="stat-number">{stats.totalFiles}</span>
-                    <span>Files</span>
-                </div>
             </div>
 
             <div className="search-box">
