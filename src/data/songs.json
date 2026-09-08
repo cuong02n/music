@@ -468,6 +468,26 @@
     }
   },
   {
+    "name": "NỤ HỒNG MONG MANH",
+    "addedAt": 1788885932434,
+    "difficulties": {
+      "Medium": {
+        "MIDI": [
+          {
+            "name": "NỤ HỒNG MONG MANH.mid",
+            "path": "/music/piano/NỤ HỒNG MONG MANH/Medium/MIDI/NỤ HỒNG MONG MANH.mid"
+          }
+        ],
+        "Piano": [
+          {
+            "name": "NỤ HỒNG MONG MANH.pdf",
+            "path": "/music/piano/NỤ HỒNG MONG MANH/Medium/Piano/NỤ HỒNG MONG MANH.pdf"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "Phép Màu",
     "addedAt": 1768312136912.525,
     "difficulties": {
@@ -574,6 +594,20 @@
           {
             "name": "ThÃ¡ng TÆ° LÃ  Lá»i NÃ³i Dá»i Cá»§a Em.pdf",
             "path": "/music/piano/Tháng Tư Là Lời Nói Dối Của Em/Easy/Piano/ThÃ¡ng TÆ° LÃ  Lá»i NÃ³i Dá»i Cá»§a Em.pdf"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "Tom And Jerry Theme",
+    "addedAt": 1788885543477,
+    "difficulties": {
+      "Medium": {
+        "Piano": [
+          {
+            "name": "Tom And Jerry Theme.pdf",
+            "path": "/music/piano/Tom And Jerry Theme/Medium/Piano/Tom And Jerry Theme.pdf"
           }
         ]
       }
