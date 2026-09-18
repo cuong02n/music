@@ -134,6 +134,26 @@
     }
   },
   {
+    "name": "Dĩ vãng nhạt nhòa intro",
+    "addedAt": 1789720744480,
+    "difficulties": {
+      "Easy": {
+        "MIDI": [
+          {
+            "name": "Dĩ vãng nhạt nhòa intro.mid",
+            "path": "/music/piano/Dĩ vãng nhạt nhòa intro/Easy/MIDI/Dĩ vãng nhạt nhòa intro.mid"
+          }
+        ],
+        "Piano": [
+          {
+            "name": "Dĩ vãng nhạt nhòa intro.pdf",
+            "path": "/music/piano/Dĩ vãng nhạt nhòa intro/Easy/Piano/Dĩ vãng nhạt nhòa intro.pdf"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "E là không thể",
     "addedAt": 1768312136676.524,
     "difficulties": {
@@ -274,6 +294,20 @@
           {
             "name": "Khuc Giao Mua Piano.pdf",
             "path": "/music/piano/Khúc Giao Mùa/Easy/Piano/Khuc Giao Mua Piano.pdf"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "Kiss The Rain",
+    "addedAt": 1789720688246,
+    "difficulties": {
+      "Hard": {
+        "Piano": [
+          {
+            "name": "Kiss The Rain.pdf",
+            "path": "/music/piano/Kiss The Rain/Hard/Piano/Kiss The Rain.pdf"
           }
         ]
       }
